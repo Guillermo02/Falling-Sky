@@ -11,15 +11,15 @@ pygame.display.set_caption('Falling-Sky')
 
 
 # ----- Inicia assets
-METEOR_WIDTH = 50
-METEOR_HEIGHT = 38
+#TAMANHO DO TRECO CAINDO
+#TAMANHO DO TRECO CAINDO
 JOG_WIDTH = 50
 JOG_HEIGHT = 38
-font = pygame.font.SysFont(None, 48)
-background = pygame.image.load('assets/img/Fundo.png').convert()
-meteor_img = pygame.image.load('assets/img/Meteoro.png').convert()
-meteor_img = pygame.transform.scale(meteor_img, (METEOR_WIDTH, METEOR_HEIGHT))
-jog_img = pygame.image.load('assets/img/Kirby/Kirby parado.png').convert()
+font = pygame.font.SysFont(None, 48) #FONTE DE LETRA UTILIZADA
+background = pygame.image.load('img/Fundo.png').convert()
+#CODIGO DO TRECO CAINDO
+#CODIGO DO TRECO CAINDO
+jog_img = pygame.image.load('img/Kirby/Kirby parado.png').convert()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
 
  # Redimensiona o fundo   
@@ -27,7 +27,7 @@ background = pygame.transform.scale(background, (700, 620))
 background_rect = background.get_rect()
 
 # Define a aceleração da gravidade
-GRAVITY = 3
+GRAVITY = 6
 # Define estados possíveis do jogador
 STILL = 0
 JUMPING = 1
@@ -41,7 +41,6 @@ class jogador(pygame.sprite.Sprite):
         # Define estado atual
         # Usamos o estado para decidir se o jogador pode ou não pular
         self.state = STILL
-
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
@@ -63,9 +62,9 @@ class jogador(pygame.sprite.Sprite):
         # Corrige a posição para não sair da janela
         if self.rect.left < 0:
             self.rect.left = 0
-        elif self.rect.right >= WIDTH:
-            self.rect.right = WIDTH - 1
-        elif self.rect.bottom > HEIGHT:
+        if self.rect.right >= WIDTH:
+            self.rect.right = WIDTH - 4
+        if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
             self.speedy = 0
             self.state = STILL
@@ -84,13 +83,13 @@ game = True
 clock = pygame.time.Clock()
 FPS = 30
 
-# Criando um grupo de meteoros
+# Criando um grupo de TRECOS CAINDO
 all_sprites = pygame.sprite.Group()
-all_meteors = pygame.sprite.Group()
+#CODIGO DAS SPRITES DO TRECO CAINDO all_XXX = pygame.sprite.Group()
 # Criando o jogador
 player = jogador(jog_img)
 all_sprites.add(player)
-# Criando os meteoros
+# Criando os TRECOS CAINDO
 #for i in range(8):
     #meteor = Meteor(meteor_img)
     #all_sprites.add(meteor)
@@ -109,9 +108,9 @@ while game:
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
-                player.speedx -= 8
+                player.speedx -= 9
             if event.key == pygame.K_RIGHT:
-                player.speedx += 8
+                player.speedx += 9
             elif event.key == pygame.K_UP:
                 player.jump()
         # Verifica se soltou alguma tecla.
