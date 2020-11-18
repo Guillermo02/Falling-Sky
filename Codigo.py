@@ -101,6 +101,7 @@ class inimigo(pygame.sprite.Sprite):
         if self.rect.centerx > WIDTH:
             self.rect.centerx = -100
 
+class poder()
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
