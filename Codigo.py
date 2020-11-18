@@ -19,8 +19,11 @@ font = pygame.font.SysFont(None, 48) #FONTE DE LETRA UTILIZADA
 background = pygame.image.load('img/Fundo.png').convert()
 #CODIGO DO TRECO CAINDO
 #CODIGO DO TRECO CAINDO
-jog_img = pygame.image.load('img/Kirby/Kirby parado.png').convert()
+#jog_img = pygame.image.load('img/Kirby/Kirby parado.png').convert()
+jog_img = pygame.image.load('img/Kirby parado T.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
+inim_img = pygame.image.load('img/Meteoro.png').convert_alpha()
+inim_img = pygame.transform.scale(inim_img, (140, 140))
 
  # Redimensiona o fundo   
 background = pygame.transform.scale(background, (700, 620))
@@ -34,14 +37,14 @@ JUMPING = 1
 FALLING = 2
 
 class jogador(pygame.sprite.Sprite):
-    def __init__(self, img):
+    def __init__(self, jog_img):
         # Construtor da classe mãe (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
         # Define estado atual
         # Usamos o estado para decidir se o jogador pode ou não pular
         self.state = STILL
-        self.image = img
+        self.image = jog_img
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.bottom = HEIGHT - 10
@@ -77,6 +80,26 @@ class jogador(pygame.sprite.Sprite):
             self.speedy -= 50
             self.state = JUMPING
 
+class inimigo(pygame.sprite.Sprite):
+    def __init__(self, inim_img):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+
+        # Define estado atual
+        # Usamos o estado para decidir se o jogador pode ou não pular
+        self.image = inim_img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = -100
+        self.rect.centery = WIDTH - 500
+        self.speedx = 0
+        self.speedy = 0
+    
+    def update(self):
+        self.rect.x += 6
+
+        if self.rect.centerx > WIDTH:
+            self.rect.centerx = -100
 
 game = True
 # Variável para o ajuste de velocidade
@@ -88,7 +111,9 @@ all_sprites = pygame.sprite.Group()
 #CODIGO DAS SPRITES DO TRECO CAINDO all_XXX = pygame.sprite.Group()
 # Criando o jogador
 player = jogador(jog_img)
+destruidor = inimigo(inim_img)
 all_sprites.add(player)
+all_sprites.add(destruidor)
 # Criando os TRECOS CAINDO
 #for i in range(8):
     #meteor = Meteor(meteor_img)
