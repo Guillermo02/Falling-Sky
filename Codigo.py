@@ -13,8 +13,8 @@ pygame.display.set_caption('Falling-Sky')
 # ----- Inicia assets
 #TAMANHO DO TRECO CAINDO
 #TAMANHO DO TRECO CAINDO
-JOG_WIDTH = 50
-JOG_HEIGHT = 38
+JOG_WIDTH = 90
+JOG_HEIGHT = 80
 font = pygame.font.SysFont(None, 48) #FONTE DE LETRA UTILIZADA
 background = pygame.image.load('img/Fundo.png').convert()
 #CODIGO DO TRECO CAINDO
