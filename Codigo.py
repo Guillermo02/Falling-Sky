@@ -19,11 +19,12 @@ font = pygame.font.SysFont(None, 48) #FONTE DE LETRA UTILIZADA
 background = pygame.image.load('img/Fundo.png').convert()
 #CODIGO DO TRECO CAINDO
 #CODIGO DO TRECO CAINDO
-#jog_img = pygame.image.load('img/Kirby/Kirby parado.png').convert()
-jog_img = pygame.image.load('img/Kirby parado T.png').convert_alpha()
+jog_img = pygame.image.load('img/Kirby parado.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
-inim_img = pygame.image.load('img/Meteoro.png').convert_alpha()
+inim_img = pygame.image.load('img/roda da morte.png').convert_alpha()
 inim_img = pygame.transform.scale(inim_img, (140, 140))
+#poder_img = pygame.image.load().convert_alpha()
+#poder_img = pygame.transform.scale(poder_img, (20,20))
 
  # Redimensiona o fundo   
 background = pygame.transform.scale(background, (700, 620))
@@ -101,7 +102,8 @@ class inimigo(pygame.sprite.Sprite):
         if self.rect.centerx > WIDTH:
             self.rect.centerx = -100
 
-class poder()
+
+
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
@@ -113,8 +115,10 @@ all_sprites = pygame.sprite.Group()
 # Criando o jogador
 player = jogador(jog_img)
 destruidor = inimigo(inim_img)
+#podersinho = poder(poder_img)
 all_sprites.add(player)
 all_sprites.add(destruidor)
+#all_sprites.add(podersinho)
 # Criando os TRECOS CAINDO
 #for i in range(8):
     #meteor = Meteor(meteor_img)
