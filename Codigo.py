@@ -88,7 +88,6 @@ class inimigo(pygame.sprite.Sprite):
 
 
         # Define estado atual
-        # Usamos o estado para decidir se o jogador pode ou não pular
         self.image = inim_img
         self.rect = self.image.get_rect()
         self.rect.centerx = -100
