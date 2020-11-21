@@ -23,8 +23,8 @@ jog_img = pygame.image.load('img/Kirby parado.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
 inim_img = pygame.image.load('img/roda da morte.png').convert_alpha()
 inim_img = pygame.transform.scale(inim_img, (140, 140))
-#poder_img = pygame.image.load().convert_alpha()
-#poder_img = pygame.transform.scale(poder_img, (20,20))
+poder_img = pygame.image.load().convert_alpha()
+poder_img = pygame.transform.scale(poder_img, (20,20))
 
  # Redimensiona o fundo   
 background = pygame.transform.scale(background, (700, 620))
@@ -88,7 +88,6 @@ class inimigo(pygame.sprite.Sprite):
 
 
         # Define estado atual
-        # Usamos o estado para decidir se o jogador pode ou não pular
         self.image = inim_img
         self.rect = self.image.get_rect()
         self.rect.centerx = -100
