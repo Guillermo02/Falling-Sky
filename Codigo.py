@@ -23,8 +23,8 @@ jog_img = pygame.image.load('img/Kirby parado.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
 inim_img = pygame.image.load('img/roda da morte.png').convert_alpha()
 inim_img = pygame.transform.scale(inim_img, (140, 140))
-#poder_img = pygame.image.load().convert_alpha()
-#poder_img = pygame.transform.scale(poder_img, (20,20))
+poder_img = pygame.image.load('img/gemas/hab b.png').convert_alpha()
+poder_img = pygame.transform.scale(poder_img, (20,20))
 
  # Redimensiona o fundo   
 background = pygame.transform.scale(background, (700, 620))
@@ -102,6 +102,21 @@ class inimigo(pygame.sprite.Sprite):
         if self.rect.centerx > WIDTH:
             self.rect.centerx = -100
 
+class poder():
+    def __init__(self, poder_img):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = poder_img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = random.randint(10,690)
+        self.rect.centery =random.randint (520,WIDTH)
+        self.speedx = 0
+        self.speedy = 0
+
+    #def update (self):
+
+
 
 
 game = True
@@ -128,6 +143,7 @@ all_sprites.add(destruidor)
 # ===== Loop principal =====
 while game:
     clock.tick(FPS)
+    #t += 5
 
     # ----- Trata eventos
     for event in pygame.event.get():
