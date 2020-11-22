@@ -22,7 +22,7 @@ background = pygame.image.load('img/Fundo.png').convert()
 jog_img = pygame.image.load('img/Kirby parado.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
 inim_img = pygame.image.load('img/roda da morte.png').convert_alpha()
-inim_img = pygame.transform.scale(inim_img, (140, 140))
+inim_img = pygame.transform.scale(inim_img, (70, 70))
 poder_img = pygame.image.load('img/gemas/hab b.png').convert_alpha()
 poder_img = pygame.transform.scale(poder_img, (20,20))
 
