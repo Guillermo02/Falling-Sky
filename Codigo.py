@@ -3,6 +3,8 @@ import random
 
 pygame.init()
 
+pygame.mixer.init()
+
 # ----- Gera tela principal
 WIDTH = 700
 HEIGHT = 600
@@ -39,6 +41,15 @@ t_gemas = [gemab_img, gemay_img, gemag_img]
 background = pygame.image.load('img/Fundo.png').convert()
 background = pygame.transform.scale(background, (700, 620))
 background_rect = background.get_rect()
+
+#assets fonte de texto
+
+score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
+
+# Carrega os sons do jogo
+
+pygame.mixer.music.load('snd/Ketsa_-_10_-_wallow.mp3')
+pygame.mixer.music.set_volume(0.4)
 
 # Define a aceleração da gravidade
 GRAVITY = 6
@@ -198,6 +209,7 @@ for i in range(5):
     all_sprites.add(hab)
 
 # ===== Loop principal =====
+pygame.mixer.music.play(loops=-1)
 while game:
     Tempo.tick(FPS)
     #t += 5
@@ -234,6 +246,18 @@ while game:
     window.blit(background, (0, 0))
     # Desenhando meteoros
     all_sprites.draw(window)
+    # Desenhando o score
+    text_surface = score_font.render("{​​​​:06d}​​​​".format(PONTOS), True, (255, 0, 200))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (90, 10)
+    window.blit(text_surface, text_rect)
+
+    # Desenhando as vidas
+
+    text_surface = score_font.render(chr(9829) * VIDAS, True, (255, 0, 0))
+    text_rect = text_surface.get_rect()
+    text_rect.bottomleft = (10, HEIGHT - 10)
+    window.blit(text_surface, text_rect)
 
     pygame.display.update()  # Mostra o novo frame para o jogador
 
