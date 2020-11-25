@@ -27,6 +27,12 @@ gemab_img = pygame.image.load('img/gemas/hab b.png').convert_alpha()
 gemay_img = pygame.image.load('img/gemas/hab y.png').convert_alpha()
 gemag_img = pygame.image.load('img/gemas/hab g.png').convert_alpha()
 t_gemas = [gemab_img, gemay_img, gemag_img]
+#assets meteoros
+chao_img = pygame.image.load("img/plataforma.png").convert_alpha()
+chao_img = pygame.transform.scale(chao_img, (710, 200))
+#assets meteoro
+meteoro_img = pygame.image.load('img/meteorodragon.png').convert_alpha()
+meteoro_img = pygame.transform.scale(meteoro_img, (50, 38))
 #assets background
 background = pygame.image.load('img/Fundo.png').convert()
 background = pygame.transform.scale(background, (700, 620))
@@ -101,15 +107,14 @@ class jogador(pygame.sprite.Sprite):
             self.rect.bottom = HEIGHT
             self.speedy = 0
             self.state = STILL
-
        
     #Método que faz o personagem pular
     def jump(self):
         #Só pode pular se ainda não estiver pulando ou caindo
         if self.state == STILL:
             self.speedy -= 50
-            self.state = JUMPING
-        
+            self.state = JUMPING       
+
 class inimigo(pygame.sprite.Sprite):
     def __init__(self, inim_img):
         pygame.sprite.Sprite.__init__(self)
@@ -136,7 +141,42 @@ class poder(pygame.sprite.Sprite):
         self.rect.centerx = random.randint(30,670)
         self.rect.centery = random.randint (WIDTH-300,WIDTH-200)
         self.speedx = 0 
-        self.speedy = 0
+        self.speedy = 0   
+
+class Plataforma (pygame.sprite.Sprite):
+    def __init__(self,chao_img):
+        
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.image = chao_img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH/2
+        self.rect.y = HEIGHT-10
+
+class Meteoro(pygame.sprite.Sprite):
+    def __init__(self,meteoro_img):
+
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = meteoro_img
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0,WIDTH-50)
+        self.rect.y = random.randint(-100,-38)
+        self.velocidadex = random.randint(-3,3)
+        self.velocidadey = random.randint(2,9)
+    
+    def update(self):
+        #atualizando a posicao do meteoro
+        self.rect.x += self.velocidadex
+        self.rect.y += self.velocidadey
+        # Se o meteoro passar do final da tela, volta para cima e sorteia
+        # novas posições e velocidades
+        
+        if self.rect.top > HEIGHT or self.rect.right < 0 or self.rect.left > WIDTH:
+            self.rect.x = random.randint(0,WIDTH-50)
+            self.rect.y = random.randint(-100,-38)
+            self.velocidadex = random.randint(-3,3)
+            self.velocidadey = random.randint(2,9)
 
 game = True
 #Cria um relógio que conta o tempo em jogo
@@ -151,18 +191,25 @@ gema_img = pygame.transform.scale(gema, (40,40))
 all_sprites = pygame.sprite.Group()
 collide_destruidor = pygame.sprite.Group()
 collide_gema = pygame.sprite.Group()
+collide_meteoros = pygame.sprite.Group()
 # Criando o jogador, inimigo e gemas
 player = jogador(jog_img, VIDAS)
 destruidor = inimigo(inim_img)
 gema_ponto = poder(gema_img)
+chao = Plataforma(chao_img)
 #Adicionando sprites em uma variável global
 all_sprites.add(player)
 all_sprites.add(destruidor)
+all_sprites.add(chao)
 collide_destruidor.add(destruidor)
 for i in range(5):
     gema_ponto = poder(gema_img)
     all_sprites.add(gema_ponto)
     collide_gema.add(gema_ponto)
+for i in range(8):
+    meteoro = Meteoro(meteoro_img)
+    all_sprites.add(meteoro)
+    collide_meteoros.add(meteoro)
 
 
 # ===== Loop principal =====
@@ -220,6 +267,7 @@ while game:
         all_sprites.update()
         collide_destruidor.update()
         collide_gema.update()
+        collide_meteoros.update()
 
         # ----- Gera saídas
         window.fill((0, 0, 0))  # Preenche com a cor branca
