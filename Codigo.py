@@ -27,7 +27,7 @@ gemab_img = pygame.image.load('img/gemas/hab b.png').convert_alpha()
 gemay_img = pygame.image.load('img/gemas/hab y.png').convert_alpha()
 gemag_img = pygame.image.load('img/gemas/hab g.png').convert_alpha()
 t_gemas = [gemab_img, gemay_img, gemag_img]
-#assets background
+
 background = pygame.image.load('img/Fundo.png').convert()
 background = pygame.transform.scale(background, (700, 620))
 background_rect = background.get_rect()
@@ -63,7 +63,9 @@ class jogador(pygame.sprite.Sprite):
         self.lifes = VIDAS
     
     def update(self):
+
         #Movimentação em y
+
         self.speedy += GRAVITY
         #Atualiza a posição y
         self.rect.y += self.speedy
@@ -85,7 +87,6 @@ class jogador(pygame.sprite.Sprite):
             self.image = pygame.image.load('img/kirby correndo e.png').convert_alpha()
         self.image = pygame.transform.scale(self.image, (JOG_WIDTH, JOG_HEIGHT))
 
-
         #Se jogador colidiu com algum inimigo
         collisions = pygame.sprite.spritecollide(self, collide_destruidor, False)
         #Perde uma vida
@@ -102,8 +103,7 @@ class jogador(pygame.sprite.Sprite):
             self.speedy = 0
             self.state = STILL
 
-       
-    #Método que faz o personagem pular
+# Método que faz o personagem pular
     def jump(self):
         #Só pode pular se ainda não estiver pulando ou caindo
         if self.state == STILL:
@@ -142,6 +142,8 @@ game = True
 #Cria um relógio que conta o tempo em jogo
 tempo = pygame.time.Clock()
 FPS = 30
+gema = random.choice(t_gemas)
+gema_img = pygame.transform.scale(gema, (40,40))
 
 #Gemas aleatórias que aparecem
 gema = random.choice(t_gemas)
@@ -163,7 +165,7 @@ for i in range(5):
     gema_ponto = poder(gema_img)
     all_sprites.add(gema_ponto)
     collide_gema.add(gema_ponto)
-
+    
 
 # ===== Loop principal =====
 #pygame.mixer.music.play(loops=-1) ##MUSICA
@@ -254,8 +256,6 @@ while game:
                 game = False
             if event.type == pygame.KEYDOWN:
                 game = False
-
     pygame.display.update()  # Mostra o novo frame para o jogador
-
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
