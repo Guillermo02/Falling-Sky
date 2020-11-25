@@ -46,6 +46,8 @@ GRAVITY = 6
 STILL = 0
 JUMPING = 1
 FALLING = 2
+PONTOS = 0
+VIDAS = 3
 
 class jogador(pygame.sprite.Sprite):
     def __init__(self, jog_img):
@@ -61,6 +63,7 @@ class jogador(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT - 10
         self.speedx = 0
         self.speedy = 0
+        self.lifes = VIDAS
     
     def update(self):
 
@@ -249,7 +252,35 @@ while game:
         collide_destruidor.add(destruidor)
 
     contato = pygame.sprite.spritecollide(player, collide_gema, True)        
+    #Pontos
 
+    if len(contato)>0:
+
+        if gema == gemay_img or gema == gemag_img:
+
+            PONTOS += 5
+
+        elif gema == gemab_img:
+
+            PONTOS += 10
+
+    for gema in contato:
+
+        gema = random.choice(t_gemas)
+
+        gema_img = pygame.transform.scale(gema, (40,40))
+
+        gema_ponto = poder(gema_img)
+
+        all_sprites.add(gema_ponto)
+
+        collide_gema.add(gema_ponto)
+
+
+
+    if PONTOS % 1000 == 0 and VIDAS<3:
+
+        VIDAS += 1
     # ----- Atualiza estado do jogo
     # Atualizando a posição dos meteoros
     all_sprites.update()
