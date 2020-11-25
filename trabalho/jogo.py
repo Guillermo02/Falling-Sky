@@ -1,5 +1,6 @@
-import pygame 
+import pygame  
 import random
+
 
 pygame.init()
 
@@ -14,25 +15,26 @@ largura_meteoro = 50
 altura_meteoro = 38
 font = pygame.font.SysFont(None,48)
 background = pygame.image.load("starfield.png").convert()
-imagem_meteoro = pygame.image.load('meteoro.png').convert_alpha()
+imagem_meteoro = pygame.image.load('meteorodragon.png').convert_alpha()
 imagem_meteoro = pygame.transform.scale(imagem_meteoro, (largura_meteoro, altura_meteoro))
 
-largura_nave = 50
-altura_nave = 50
-imagem_nave = pygame.image.load("playerShip1_orange.png").convert_alpha()
-imagem_nave = pygame.transform.scale(imagem_nave, (largura_nave, altura_nave))
+largura_chao = 480
+altura_chao = 100
+
+imagem_chao = pygame.image.load("plataforma.png").convert_alpha()
+imagem_chao = pygame.transform.scale(imagem_chao, (largura_chao, altura_chao))
 
 class Meteoro(pygame.sprite.Sprite):
-    def __init__(self,img):
+    def __init__(self,imagem_meteoro):
 
         pygame.sprite.Sprite.__init__(self)
 
-        self.imagem_meteoro = img
-        self.rect = self.imagem_meteoro.get_rect()
+        self.image = imagem_meteoro
+        self.rect = self.image.get_rect()
         self.rect.x = random.randint(0,largura-largura_meteoro)
         self.rect.y = random.randint(-100,-altura_meteoro)
-        self.velocidadex = random.randint(-3,3)
-        self.velocidadey = random.randint(2,9)
+        self.velocidadex = random.randint(0,3)
+        self.velocidadey = random.randint(2,6)
     
     def update(self):
         #atualizando a posicao do meteoro
@@ -44,32 +46,35 @@ class Meteoro(pygame.sprite.Sprite):
         if self.rect.top > altura or self.rect.right < 0 or self.rect.left > largura:
             self.rect.x = random.randint(0,largura-largura_meteoro)
             self.rect.y = random.randint(-100,-altura_meteoro)
-            self.velocidadex = random.randint(-3,3)
-            self.velocidadey = random.randint(2,9)
+            self.velocidadex = random.randint(0,3)
+            self.velocidadey = random.randint(2,6)
             
 
-class nave(pygame.sprite.Sprite):
-    def __init__(self):
-
+class Plataforma (pygame.sprite.Sprite):
+    def __init__(self,imagem_chao):
+        
         pygame.sprite.Sprite.__init__(self)
         
-        self.imagem_nave = img
-        self.rect = self.imagem_nave.get_rect()
+        self.image = imagem_chao
+        self.rect = self.image.get_rect()
+        self.rect.y = altura-30
+        self.rect.x = largura-480
 
-        self.rect.centerx = largura/2
-        self.rect.bottom = altura - 10
-
-
+chao = Plataforma(imagem_chao)
+all_sprite = pygame.sprite.Group()
+all_sprite.add(chao)
+all_sprite.add()
+varios_meteoros = pygame.sprite.Group()
 # Meteor assets
 game = True
 clock = pygame.time.Clock()
 fps = 30
 
-varios_meteoros = pygame.sprite.Group()
 
-for i in range(8):
+for i in range(4):
     meteoro = Meteoro(imagem_meteoro)
     varios_meteoros.add(meteoro)
+    all_sprite.add(meteoro)
 
 while game:
     clock.tick(fps)
@@ -79,15 +84,20 @@ while game:
     
     #atualiza meteoros
     
-    varios_meteoros.update()
-        
-
+    all_sprite.update()
+    colisao = pygame.sprite.spritecollide(chao, varios_meteoros, True)
+    
+    for colide in colisao:
+        meteoro = Meteoro(imagem_meteoro)
+        varios_meteoros.add(meteoro)
+        all_sprite.add(meteoro)
     #Gera saidas(imagens)
 
     tela.fill((0,0,0))
     tela.blit(background, (0,0))
     
-    varios_meteoros.draw(tela)
+    
+    all_sprite.draw(tela)
     pygame.display.update()
 
 pygame.quit()
