@@ -3,7 +3,7 @@ import random
 #import Kirbys   ##Possibilidade de kerbys extras
 
 pygame.init()
-#pygame.mixer.init()   ##MUSICA
+pygame.mixer.init()   ##MUSICA
 
 # ----- Gera tela principal
 WIDTH = 700
@@ -41,8 +41,8 @@ background_rect = background.get_rect()
 score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
 
 # Carrega os sons do jogo
-#pygame.mixer.music.load('snd/Ketsa_-_10_-_wallow.mp3')
-#pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.load('snd/Ketsa_-_10_-_wallow.mp3')
+pygame.mixer.music.set_volume(0.4)
 
 # Define estados possíveis do jogador
 STILL = 0
@@ -216,7 +216,7 @@ for i in range(8):
 
 
 # ===== Loop principal =====
-#pygame.mixer.music.play(loops=-1) ##MUSICA
+pygame.mixer.music.play(loops=-1) ##MUSICA
 while game:
     if VIDAS > 0:
         tempo.tick(FPS)
