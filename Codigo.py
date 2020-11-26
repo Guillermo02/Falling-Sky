@@ -41,7 +41,7 @@ background_rect = background.get_rect()
 score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
 
 # Carrega os sons do jogo
-#musica   = pygame.mixer.music.load('snd/Musica de fundo.mp3')
+musica   = pygame.mixer.music.load('snd/Musica de fundo.mp3')
 #item_som = pygame.mixer.Sound('snd/item.flac')
 #dano_som = pygame.mixer.Sound('snd/dano.flac')
 #pulo_som = pygame.mixer.Sound('snd/pulo.flac')
@@ -223,7 +223,7 @@ for i in range(5):
 
 
 # ===== Loop principal =====
-#pygame.mixer.music.play(loops=-1) ##MUSICA
+pygame.mixer.music.play(loops=-1) ##MUSICA
 while game:
     if VIDAS > 0:
         tempo.tick(FPS)
