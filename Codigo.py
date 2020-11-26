@@ -3,7 +3,11 @@ import random
 #import Kirbys   ##Possibilidade de kerbys extras
 
 pygame.init()
+<<<<<<< HEAD
 pygame.mixer.init()   ##MUSICA
+=======
+pygame.mixer.init()
+>>>>>>> b06035603aaf49978a21262828c01eaac55db7db
 
 # ----- Gera tela principal
 WIDTH = 700
@@ -21,7 +25,7 @@ jog_img = pygame.image.load('img/kirby parado.png').convert_alpha()
 jog_img = pygame.transform.scale(jog_img, (JOG_WIDTH, JOG_HEIGHT))
 #assets inimigo
 inim_img = pygame.image.load('img/roda da morte.png').convert_alpha()
-inim_img = pygame.transform.scale(inim_img, (60, 60))
+inim_img = pygame.transform.scale(inim_img, (70, 70))
 #assets gemas
 gemab_img = pygame.image.load('img/gemas/hab b.png').convert_alpha()
 gemay_img = pygame.image.load('img/gemas/hab y.png').convert_alpha()
@@ -32,7 +36,7 @@ chao_img = pygame.image.load("img/plataforma.png").convert_alpha()
 chao_img = pygame.transform.scale(chao_img, (710, 200))
 #assets meteoro
 meteoro_img = pygame.image.load('img/meteorodragon.png').convert_alpha()
-meteoro_img = pygame.transform.scale(meteoro_img, (50, 38))
+meteoro_img = pygame.transform.scale(meteoro_img, (80, 80))
 #assets background
 background = pygame.image.load('img/Fundo.png').convert()
 background = pygame.transform.scale(background, (700, 620))
@@ -41,8 +45,11 @@ background_rect = background.get_rect()
 score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
 
 # Carrega os sons do jogo
-pygame.mixer.music.load('snd/Ketsa_-_10_-_wallow.mp3')
-pygame.mixer.music.set_volume(0.4)
+musica   = pygame.mixer.music.load('snd/Musica de fundo.mp3')
+#item_som = pygame.mixer.Sound('snd/item.flac')
+#dano_som = pygame.mixer.Sound('snd/dano.flac')
+#pulo_som = pygame.mixer.Sound('snd/pulo.flac')
+#pygame.mixer.music.set_volume(0.2)
 
 # Define estados possíveis do jogador
 STILL = 0
@@ -82,6 +89,7 @@ class jogador(pygame.sprite.Sprite):
         #Se estiver no ar: kirby no ar
         if self.rect.bottom < HEIGHT-10:
             self.image = pygame.image.load('img/kirby saltando.png').convert_alpha()
+            #pulo_som.play()  ###AUDIO DE PULO
         #Se estiver parado: kirby parado
         if self.rect.bottom > HEIGHT-9 and self.speedx==0:
             self.image = pygame.image.load('img/kirby parado.png').convert_alpha()
@@ -95,8 +103,11 @@ class jogador(pygame.sprite.Sprite):
 
         #Se jogador colidiu com algum inimigo
         collisions = pygame.sprite.spritecollide(self, collide_destruidor, False)
+        collisions2 = pygame.sprite.spritecollide(self, collide_meteoros, False)
         #Perde uma vida
         for collision in collisions:
+            self.lifes -= 1
+        for collision in collisions2:
             self.lifes -= 1
         
         #Corrige a posição para não sair da janela
@@ -124,7 +135,7 @@ class inimigo(pygame.sprite.Sprite):
         self.image = inim_img
         self.rect = self.image.get_rect()
         self.rect.centerx = -100
-        self.rect.centery = WIDTH - 100
+        self.rect.centery = WIDTH - 120
         self.speedx = 0
         self.speedy = 0
     
@@ -164,7 +175,7 @@ class Meteoro(pygame.sprite.Sprite):
         self.rect.x = random.randint(0,WIDTH-50)
         self.rect.y = random.randint(-100,-38)
         self.velocidadex = random.randint(-3,3)
-        self.velocidadey = random.randint(2,9)
+        self.velocidadey = random.randint(2,3)
     
     def update(self):
         #atualizando a posicao do meteoro
@@ -177,7 +188,7 @@ class Meteoro(pygame.sprite.Sprite):
             self.rect.x = random.randint(0,WIDTH-50)
             self.rect.y = random.randint(-100,-38)
             self.velocidadex = random.randint(-3,3)
-            self.velocidadey = random.randint(2,9)
+            self.velocidadey = random.randint(2,3)
 
 game = True
 #Cria um relógio que conta o tempo em jogo
@@ -209,7 +220,7 @@ for i in range(5):
     gema_ponto = poder(gema_img)
     all_sprites.add(gema_ponto)
     collide_gema.add(gema_ponto)
-for i in range(8):
+for i in range(5):
     meteoro = Meteoro(meteoro_img)
     all_sprites.add(meteoro)
     collide_meteoros.add(meteoro)
@@ -242,11 +253,14 @@ while game:
                     player.speedx = 0
         
         hits = pygame.sprite.spritecollide(player, collide_destruidor, True, pygame.sprite.collide_mask)
-        if len(hits) > 0:
+        hits2 = pygame.sprite.spritecollide(player, collide_meteoros, True, pygame.sprite.collide_mask)
+        if len(hits) > 0 or len(hits2)>0:
             VIDAS -= 1
             destruidor.rect.x = -200
             all_sprites.add(destruidor)
+            all_sprites.add(meteoro)
             collide_destruidor.add(destruidor)
+            collide_meteoros.add(meteoro)
         contato = pygame.sprite.spritecollide(player, collide_gema, True)
         
         #Pontos 
@@ -263,7 +277,7 @@ while game:
             all_sprites.add(gema_ponto)
             collide_gema.add(gema_ponto)
 
-        if PONTOS % 1000 == 0 and VIDAS<3:
+        if PONTOS % 100 == 0 and VIDAS<3:
             VIDAS += 1
         # ----- Atualiza estado do jogo
         # Atualizando a posição dos meteoros
@@ -294,10 +308,14 @@ while game:
     
     else:
         window.fill((0, 0, 0))
-        text_surface = score_font.render("Você Perdeu :(", True, (255, 0, 0))
+        text_surface = score_font.render("Que pena vc perdeu", True, (255, 0, 0))
+        text_surface2 = score_font.render("Você tem {0} pontos".format(PONTOS), True, (255, 0, 0))
         text_rect = text_surface.get_rect()
-        text_rect.midtop = (WIDTH/2, HEIGHT/2)
+        text2_rect = text_surface.get_rect()
+        text_rect.midtop = (WIDTH/2, (HEIGHT/2)-100)
+        text2_rect.midtop = (WIDTH/2, (HEIGHT/2)+50)
         window.blit(text_surface, text_rect)
+        window.blit(text_surface2, text2_rect)
 
         for event in pygame.event.get():
             # ----- Verifica consequências
