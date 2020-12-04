@@ -3,11 +3,7 @@ import random
 #import Kirbys   ##Possibilidade de kerbys extras
 
 pygame.init()
-<<<<<<< HEAD
 pygame.mixer.init()   ##MUSICA
-=======
-pygame.mixer.init()
->>>>>>> b06035603aaf49978a21262828c01eaac55db7db
 
 # ----- Gera tela principal
 WIDTH = 700
